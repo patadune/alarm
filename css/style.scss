@@ -1,0 +1,131 @@
+@font-face {
+    font-family: "LCD";
+    src: url('../res/pixel.ttf');
+}
+
+body {
+	font-family: "LCD";
+	background-color: black;
+	margin:0;
+	border:0;
+}
+
+div:empty { display: none }
+
+span, #green, #red, #yellow, #blue, #grey {cursor:pointer;}
+
+$colors: (red #ff0000) (green #00ff00) (yellow #ffff00) (blue #0000ff) (grey #ffffff);
+
+@each $color in $colors {
+
+	$name: nth($color, 1);
+	$color: nth($color, 2);
+	
+  .#{$name}_overlay, .#{$name} span:hover {
+		color: $color;
+		text-shadow:0px 0px 20px $color;
+	}
+	
+	.#{$name} {color: $color * 0.15;}
+}
+
+#layout, #overlay, #controls {
+	position:absolute;
+	width:800px;
+	height:200px;
+	top:50%;
+	margin-top:-100px;
+	left:50%;
+	margin-left:-400px;
+	text-align: center;
+	font-size: 40px;
+}
+
+#top, #bottom {
+	position: absolute;
+	width:480px;
+	height:50px;
+	left:160px;
+}
+
+#top_left, #top_middle, #top_right, #bottom_left, #bottom_middle, #bottom_right {
+	position: absolute;
+}
+
+#top_left, #top_middle, #top_right {bottom:0px;}
+#bottom_left, #bottom_middle, #bottom_right {top:0px;}
+
+#top_left, #bottom_left {left:30px;}
+#top_middle, #bottom_middle{left:198px;}
+#top_right, #bottom_right{left:365px;}
+
+#bottom {bottom:15px;}
+
+#left, #left_overlay, #right, #right_overlay { /* Conteneurs gauche et droite */
+	position:absolute;
+	top:50px;
+}
+
+#left, #left_overlay {left:20px;}
+#right, #right_overlay {left:640px;}
+
+#date, #date_overlay, #year, #year_overlay, #am, #am_overlay, #pm, #pm_overlay {
+ position: absolute;
+}
+
+#year, #year_overlay, #pm, #pm_overlay {top: 40px;} //Offset for the second line
+
+#date_overlay, #year_overlay, #am_overlay, #pm_overlay {z-index:10;}
+#date, #year, #am, #pm {z-index:-10;}
+
+#clock, #clock_overlay {
+	position: absolute;
+	left:175px;
+	top:50px;
+	font-size: 80px;
+}
+	
+#clock {z-index:-10;}
+#clock_overlay {z-index:10;}
+
+#mode, #mode_overlay {
+	position:absolute;
+	width:100px;
+	top:20px;
+	left:80px;
+	border:2px solid;
+	border-radius: 5px;
+}
+
+#picker {
+	position:absolute;
+	left:10px;
+	bottom:10px;
+}
+
+#picker div {
+	display:block;
+	width:12px;
+	height:12px;
+	margin-right:10px;
+	float:left;
+	border-radius:2px;
+}
+
+#footer {
+	position:absolute;
+	bottom:10px;
+	right:10px;
+}
+
+#green {background-color: #009900;}
+#red {background-color: #990000;}
+#yellow {background-color: #999900;}
+#blue {background-color: #000099;}
+#grey{background-color: #999;}
+
+#green:hover {background-color: #00ee00; box-shadow:0px 0px 10px #00ff00;}
+#red:hover {background-color: #ee0000; box-shadow:0px 0px 10px #ff0000;}
+#yellow:hover {background-color: #eeee00; box-shadow:0px 0px 10px #ffff00;}
+#blue:hover {background-color: #0000ee; box-shadow:0px 0px 10px #0000ff;}
+#grey:hover {background-color: #eee; box-shadow:0px 0px 10px #fff;}
