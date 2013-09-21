@@ -1,9 +1,5 @@
 var t;
 
-function loadWatch() {
-  clock();
-}
-
 function stop() {clearInterval(t);}
 
 function clock() {
@@ -26,45 +22,63 @@ function alarm() {
 function stopwatch() {
   stop();
   printControls('stopwatch');
+  var data = {
+  
+    "clock" : "00:00:00"
+  };
+  printToOverlay(data);
 }
 
 function displayClock() {
 
-  //first we fetch the actual time
-  var date_obj=new Date();
-  var h=date_obj.getHours();
-  var m=date_obj.getMinutes();
-  var s=date_obj.getSeconds();
-  var d=date_obj.getDate();
-  var M=date_obj.getMonth()+1;
-  var y=date_obj.getFullYear();
-  var ampm;
-
-  // add a zero in front of numbers<10
-  h=checkTime(h);
-  m=checkTime(m);
-  s=checkTime(s);
-  d=checkTime(d);
-  M=checkTime(M);
+  //first we fetch the actual time, and put it in an object
+  var date_obj = new Date();
+  var time = {
   
-  // check for hour (even if running on 24-hour clock, I know ;)
-  if(h<12) { ampm = "am" }
-  else {ampm = "pm" }
+    "h" : date_obj.getHours(),
+    "m" : date_obj.getMinutes(),
+    "s" : date_obj.getSeconds(),
+    "d" : date_obj.getDate(),
+    "M" : date_obj.getMonth()+1,
+    "y" : date_obj.getFullYear(),
+  };
 
-  document.getElementById('date_overlay').innerHTML=d+"/"+M;
-  document.getElementById('year_overlay').innerHTML="0"+y;
-  document.getElementById('clock_overlay').innerHTML=h+":"+m+":"+s;
-  document.getElementById("am_overlay").innerHTML= "";
-  document.getElementById("pm_overlay").innerHTML= "";
-  document.getElementById(ampm+"_overlay").innerHTML= ampm;
+  // we add a zero in front of numbers<10
+  checkTime(time);
+
+  // we formats date and time to be printed
+  var data = {
+  
+    "date" : time.d+"/"+time.M,
+    "year" : "0"+time.y,
+    "clock" : time.h+":"+time.m+":"+time.s
+  };
+  
+  // check for hour, to show correct period of day (even if i'm running on 24-hour clock, I know ;)
+  if(time.h<12) { data.am = "am" }
+  else { data.pm = "pm" }
+
+  printToOverlay(data);
 }
 
-function checkTime(i) {
-  if (i<10)
+function checkTime(obj) {
+  for (value in obj) {
+    if (obj[value]<10)
     {
-    i="0" + i;
+      obj[value]="0" + obj[value];
     }
-  return i;
+  }
+}
+
+function printToOverlay(data) {
+  
+  //reset am and pm (quick fix for when passing from morning to afternoon and having 2 overlays on)
+  document.getElementById("am_overlay").innerHTML= "";
+  document.getElementById("pm_overlay").innerHTML= "";
+
+  for (value in data) {
+    document.getElementById(value+'_overlay').innerHTML = data[value];
+  }
 }
 
 function changeStyle(c) {
