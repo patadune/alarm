@@ -1,17 +1,32 @@
 var t;
 
 function loadWatch() {
-  Clock();
-  printControls('clock');
+  clock();
 }
 
-function Clock() {
-  displayClock()
+function stop() {clearInterval(t);}
+
+function clock() {
+  stop();
+  printControls('clock');
+  displayClock();
   t=setInterval(function(){displayClock()},1000);
 }
 
-function stopCurrent() {clearInterval(t);}
+function timer() {
+  stop();
+  printControls('timer');
+}
 
+function alarm() {
+  stop();
+  printControls('alarm');
+}
+
+function stopwatch() {
+  stop();
+  printControls('stopwatch');
+}
 
 function displayClock() {
 
@@ -35,8 +50,7 @@ function displayClock() {
   // check for hour (even if running on 24-hour clock, I know ;)
   if(h<12) { ampm = "am" }
   else {ampm = "pm" }
-  
-  // prints everything in the right place
+
   document.getElementById('date_overlay').innerHTML=d+"/"+M;
   document.getElementById('year_overlay').innerHTML="0"+y;
   document.getElementById('clock_overlay').innerHTML=h+":"+m+":"+s;
@@ -63,16 +77,16 @@ function changeStyle(c) {
 var controlsId = ['top_left', 'top_middle', 'top_right', 'bottom_left', 'bottom_middle', 'bottom_right', 'mode_overlay'];
 
 var clockLayout = ['alm', 'tim', 'stw', '', '', '', ''];
-var clockCommands = ['printControls("alarm")', 'printControls("timer")', 'printControls("stopwatch")', '', '', ''];
+var clockCommands = ['alarm()', 'timer()', 'stopwatch()', '', '', ''];
 
 var alarmLayout = ['/|\\', '/|\\', 'set', '\\|/', '\\|/', 'bck', 'alm'];
-var alarmCommands = ['alert("plusH")', 'alert("plusM")', 'alert("setAlarm")', 'alert("minusH")', 'alert("minusM")', 'printControls("clock")', ''];
+var alarmCommands = ['alert("plusH")', 'alert("plusM")', 'alert("setAlarm")', 'alert("minusH")', 'alert("minusM")', 'clock()', ''];
 
 var timerLayout = ['/|\\', '/|\\', 'set', '\\|/', '\\|/', 'bck', 'tim'];
-var timerCommands = ['alert("plusH")', 'alert("plusM")', 'alert("setTimer")', 'alert("minusH")', 'alert("minusM")', 'printControls("clock")', ''];
+var timerCommands = ['alert("plusH")', 'alert("plusM")', 'alert("setTimer")', 'alert("minusH")', 'alert("minusM")', 'clock()', ''];
 
 var stopwatchLayout = ['', '', '', 'go!', 'rst', 'bck', 'stw'];
-var stopwatchCommands = ['', '', '', 'alert("start")', 'alert("reset")', 'printControls("clock")', ''];
+var stopwatchCommands = ['', '', '', 'alert("start")', 'alert("reset")', 'clock()', ''];
 
 function printControls(l) {
   var layout = window[l+"Layout"];
