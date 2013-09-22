@@ -1,5 +1,5 @@
 var t;
-var timeValues = new Object(null);
+var timeValues = null;
 
 function stop() {clearInterval(t);}
 
@@ -55,8 +55,7 @@ function checkTime(obj) {
 function timer() {
   stop();
   printControls('timer');
-  timeValues.H = "00";
-  timeValues.M = "10";
+  if(timeValues == null) {timeValues = { "H" : "00", "M" : "10", "S" : "00" };}
   displayTimer();
   t=setInterval(function(){displayTimer()},100);
 }
@@ -64,12 +63,18 @@ function timer() {
 function displayTimer() {
   var data = {
   
-    "clock" : timeValues.H+":"+timeValues.M+":00",
+    "clock" : timeValues.H+":"+timeValues.M+":"+timeValues.S,
   };
   printToOverlay(data);
 }
 
-function changeTimer(sign, type) {
+/* changeTimeValues
+ *
+ * Modify values of timeValues object (increasing/decreasing), while keeping values within 24-hour format
+ *
+ */
+
+function changeTimeValues(sign, type) {
   if(sign=="+") {
     if((type == "H" && timeValues[type] == 23) || (type == "M" && timeValues[type] == 59)) {
       timeValues[type] = 0;
@@ -86,6 +91,10 @@ function changeTimer(sign, type) {
   }
 
   if (timeValues[type]<10) { timeValues[type]="0" + timeValues[type]; }
+}
+
+function startTimer() {
+
 }
 
 function alarm() {
@@ -136,7 +145,7 @@ var alarmLayout = ['/|\\', '/|\\', 'set', '\\|/', '\\|/', 'bck', 'alm'];
 var alarmCommands = ['alert("plusH")', 'alert("plusM")', 'alert("setAlarm")', 'alert("minusH")', 'alert("minusM")', 'clock()', ''];
 
 var timerLayout = ['/|\\', '/|\\', 'set', '\\|/', '\\|/', 'bck', 'tim'];
-var timerCommands = ['changeTimer("+", "H")', 'changeTimer("+", "M")', 'alert("setTimer")', 'changeTimer("-", "H")', 'changeTimer("-", "M")', 'clock()', ''];
+var timerCommands = ['changeTimeValues("+", "H")', 'changeTimeValues("+", "M")', 'alert("setTimer")', 'changeTimeValues("-", "H")', 'changeTimeValues("-", "M")', 'clock()', ''];
 
 var stopwatchLayout = ['', '', '', 'go!', 'rst', 'bck', 'stw'];
 var stopwatchCommands = ['', '', '', 'alert("start")', 'alert("reset")', 'clock()', ''];
