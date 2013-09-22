@@ -1,4 +1,5 @@
 var t;
+var timeValues = new Object(null);
 
 function stop() {clearInterval(t);}
 
@@ -7,26 +8,7 @@ function clock() {
   printControls('clock');
   displayClock();
   t=setInterval(function(){displayClock()},1000);
-}
-
-function timer() {
-  stop();
-  printControls('timer');
-}
-
-function alarm() {
-  stop();
-  printControls('alarm');
-}
-
-function stopwatch() {
-  stop();
-  printControls('stopwatch');
-  var data = {
-  
-    "clock" : "00:00:00"
-  };
-  printToOverlay(data);
+  changeStyle("grey")
 }
 
 function displayClock() {
@@ -70,6 +52,63 @@ function checkTime(obj) {
   }
 }
 
+function timer() {
+  stop();
+  printControls('timer');
+  timeValues.H = "00";
+  timeValues.M = "10";
+  displayTimer();
+  t=setInterval(function(){displayTimer()},100);
+}
+
+function displayTimer() {
+  var data = {
+  
+    "clock" : timeValues.H+":"+timeValues.M+":00",
+  };
+  printToOverlay(data);
+}
+
+function changeTimer(sign, type) {
+  if(sign=="+") {
+    if((type == "H" && timeValues[type] == 23) || (type == "M" && timeValues[type] == 59)) {
+      timeValues[type] = 0;
+    } else {
+      timeValues[type]++;
+    }
+  }
+  else {
+    if (timeValues[type] == 0) {
+      if (type == "H") {timeValues[type] = 23;}
+      else {timeValues[type] = 59;}
+    } 
+    else { timeValues[type]--; }
+  }
+
+  if (timeValues[type]<10) { timeValues[type]="0" + timeValues[type]; }
+}
+
+function alarm() {
+  stop();
+  printControls('alarm');
+  var data = {
+  
+    "clock" : "07:00",
+    "am"    : "am"
+  };
+  printToOverlay(data);
+}
+
+function stopwatch() {
+  stop();
+  printControls('stopwatch');
+  var data = {
+  
+    "clock" : "00:00:00"
+  };
+  printToOverlay(data);
+}
+
 function printToOverlay(data) {
   
   //reset am and pm (quick fix for when passing from morning to afternoon and having 2 overlays on)
@@ -97,7 +136,7 @@ var alarmLayout = ['/|\\', '/|\\', 'set', '\\|/', '\\|/', 'bck', 'alm'];
 var alarmCommands = ['alert("plusH")', 'alert("plusM")', 'alert("setAlarm")', 'alert("minusH")', 'alert("minusM")', 'clock()', ''];
 
 var timerLayout = ['/|\\', '/|\\', 'set', '\\|/', '\\|/', 'bck', 'tim'];
-var timerCommands = ['alert("plusH")', 'alert("plusM")', 'alert("setTimer")', 'alert("minusH")', 'alert("minusM")', 'clock()', ''];
+var timerCommands = ['changeTimer("+", "H")', 'changeTimer("+", "M")', 'alert("setTimer")', 'changeTimer("-", "H")', 'changeTimer("-", "M")', 'clock()', ''];
 
 var stopwatchLayout = ['', '', '', 'go!', 'rst', 'bck', 'stw'];
 var stopwatchCommands = ['', '', '', 'alert("start")', 'alert("reset")', 'clock()', ''];
