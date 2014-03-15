@@ -3,12 +3,16 @@ var timeValues = null;
 
 function stop() {clearInterval(t);}
 
+function loadClock() {
+  changeStyle("grey");
+  clock();
+}
+
 function clock() {
   stop();
   printControls('clock');
   displayClock();
   t=setInterval(function(){displayClock()},1000);
-  changeStyle("grey")
 }
 
 function displayClock() {
