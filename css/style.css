@@ -1,12 +1,20 @@
 @font-face {
-  font-family: "LCD";
-  src: url("../res/pixel.ttf"); }
+    font-family: 'pixel_lcd7regular';
+    src: url('pixel-webfont.eot');
+    src: url('pixel-webfont.eot?#iefix') format('embedded-opentype'),
+         url('pixel-webfont.woff') format('woff'),
+         url('pixel-webfont.ttf') format('truetype'),
+         url('pixel-webfont.svg#pixel_lcd7regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 
+}
 body {
-  font-family: "LCD";
+  font-family: "pixel_lcd7regular";
   background-color: black;
   margin: 0;
-  border: 0; }
+  border: 0; 
+}
 
 div:empty {
   display: none; }
@@ -123,12 +131,14 @@ span, #green, #red, #yellow, #blue, #grey {
   z-index: 10; }
 
 #mode, #mode_overlay {
-  position: absolute;
-  width: 100px;
+  position: relative;
+  width: 96px;
+  height: 40px;
   top: 20px;
   left: 80px;
+  padding-top: 2px;
   border: 2px solid;
-  border-radius: 5px; }
+  border-radius: 5px;}
 
 #picker {
   position: absolute;
